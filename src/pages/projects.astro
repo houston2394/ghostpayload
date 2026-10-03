@@ -1,0 +1,41 @@
+---
+import Base from '../layouts/Base.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { projects } from '../data/site';
+---
+
+<Base active="projects" title="Projects" description="Tools and platforms at the edge of offensive security and machine intelligence.">
+  <header class="page-head">
+    <p class="eyebrow">Projects</p>
+    <h1>Things I’ve built</h1>
+    <p class="page-sub">
+      Reconnaissance engines, threat-intercept platforms, and autonomous agents. A few are open
+      source — click through to dig in.
+    </p>
+  </header>
+
+  <div class="project-grid">
+    {projects.map((p) => <ProjectCard project={p} />)}
+  </div>
+</Base>
+
+<style>
+  .page-head {
+    padding: 28px 0 34px;
+  }
+  .page-head h1 {
+    font-size: clamp(1.8rem, 5vw, 2.4rem);
+    margin: 0 0 12px;
+    letter-spacing: -0.02em;
+  }
+  .page-sub {
+    color: var(--text-dim);
+    max-width: 58ch;
+    margin: 0;
+  }
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 16px;
+  }
+</style>

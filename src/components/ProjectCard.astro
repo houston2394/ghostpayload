@@ -1,0 +1,117 @@
+---
+import type { Project } from '../data/site';
+interface Props {
+  project: Project;
+}
+const { project } = Astro.props;
+const Tag = project.href ? 'a' : 'div';
+const attrs = project.href
+  ? { href: project.href, target: '_blank', rel: 'noopener' }
+  : {};
+---
+
+<Tag class="project-card" {...attrs}>
+  <div class="project-head">
+    <h3 class="project-name">{project.name}</h3>
+    {
+      project.status && (
+        <span class:list={['status', project.status]}>
+          <span class="dot" />
+          {project.status}
+        </span>
+      )
+    }
+  </div>
+  <p class="project-blurb">{project.blurb}</p>
+  <div class="project-tags">
+    {project.tags.map((t) => <span class="tag">{t}</span>)}
+  </div>
+  {project.href && <span class="project-arrow" aria-hidden="true">→</span>}
+</Tag>
+
+<style>
+  .project-card {
+    position: relative;
+    display: block;
+    color: var(--text);
+    background: linear-gradient(180deg, var(--panel), var(--bg-soft));
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 20px 16px;
+    height: 100%;
+    transition:
+      border-color 0.18s ease,
+      transform 0.18s ease,
+      box-shadow 0.18s ease;
+  }
+  a.project-card:hover {
+    border-color: var(--accent-dim);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px -18px rgba(57, 224, 160, 0.5);
+  }
+  .project-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .project-name {
+    margin: 0;
+    font-size: 1.05rem;
+    font-family: var(--font-mono);
+    letter-spacing: -0.01em;
+  }
+  .project-blurb {
+    margin: 0 0 14px;
+    color: var(--text-dim);
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+  .status .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--muted);
+    box-shadow: 0 0 6px currentColor;
+  }
+  .status.active {
+    color: var(--accent);
+  }
+  .status.active .dot {
+    background: var(--accent);
+  }
+  .status.building {
+    color: var(--warn);
+  }
+  .status.building .dot {
+    background: var(--warn);
+  }
+  .project-arrow {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    color: var(--muted);
+    transition: transform 0.18s ease, color 0.18s ease;
+  }
+  a.project-card:hover .project-arrow {
+    color: var(--accent);
+    transform: translate(2px, -2px);
+  }
+</style>
